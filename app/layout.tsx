@@ -4,6 +4,7 @@ import './globals.css'
 import { cn } from '@/lib/utils'
 import { ThemeProvider } from '@/components/theme-provider'
 import Header from '@/components/header'
+import { Toaster } from '@/components/ui/sonner'
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-sans' })
 
@@ -25,10 +26,11 @@ export default function RootLayout({
       className={cn('font-sans', geist.variable)}
       suppressHydrationWarning
     >
-      <body className={`${inter.className} flex flex-col w-full p-6 h-screen`}>
+      <body className={`${inter.className} flex h-screen w-full flex-col p-6`}>
         <ThemeProvider attribute='class'>
           <Header />
-          <main >{children}</main>
+          <main>{children}</main>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

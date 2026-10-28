@@ -5,6 +5,7 @@ import { ReactSketchCanvas } from 'react-sketch-canvas'
 import type { ReactSketchCanvasRef } from 'react-sketch-canvas'
 import { Button } from './ui/button'
 import { Pen, Eraser, Undo, Redo, RotateCcw, Save } from 'lucide-react'
+import { toast } from 'sonner'
 
 export default function Canvas() {
   const canvasRef = useRef<ReactSketchCanvasRef>(null)
@@ -38,6 +39,29 @@ export default function Canvas() {
 
   function handleClearClick() {
     canvasRef.current?.clearCanvas()
+  }
+
+  async function handleSave() {
+    const dataURL = await canvasRef.current?.exportImage('png')
+    if (dataURL) {
+      const link = Object.assign(document.createElement('a'), {
+        href: dataURL,
+        style: { display: 'none' },
+        download: 'sketch.png'
+      })
+
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+
+      toast.success('Image downloaded successfully!', {
+        style: {
+          background: '#16a34a',
+          color: '#ffffff',
+          border: 'none'
+        }
+      })
+    }
   }
 
   return (
@@ -138,6 +162,7 @@ export default function Canvas() {
             size='icon'
             type='button'
             variant='outline'
+            onClick={handleSave}
             aria-label='Save drawing'
           >
             <Save size={16} />

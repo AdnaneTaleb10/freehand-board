@@ -1,7 +1,10 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { ReactSketchCanvas, ReactSketchCanvasRef } from 'react-sketch-canvas'
+import { ReactSketchCanvas } from 'react-sketch-canvas'
+import type { ReactSketchCanvasRef } from 'react-sketch-canvas'
+import { Button } from './ui/button'
+import { Pen, Eraser, Undo, Redo, RotateCcw, Save } from 'lucide-react'
 
 export default function Canvas() {
   const canvasRef = useRef<ReactSketchCanvasRef>(null)
@@ -9,15 +12,87 @@ export default function Canvas() {
   const [strokeColor, setStrokeColor] = useState('#a855f7')
 
   return (
-    <div className='mt-6 flex gap-4'>
-      <ReactSketchCanvas
-        width='100%'
-        height='430px'
-        ref={canvasRef}
-        strokeColor={strokeColor}
-        canvasColor='transparent'
-        className='rounded-2xl! border-purple-500! dark:border-purple-800!'
-      />
+    <div className='mt-6 flex w-full gap-4'>
+      <div className='min-w-0 flex-1 overflow-hidden rounded-2xl'>
+        <ReactSketchCanvas
+          ref={canvasRef}
+          width='100%'
+          height='430px'
+          strokeColor={strokeColor}
+          canvasColor='transparent'
+          className='rounded-2xl! border-purple-500! dark:border-purple-800!'
+        />
+      </div>
+
+      <aside className='flex shrink-0 flex-col items-center gap-6 py-4'>
+        {/* Color picker */}
+        <div className='w-full border-b border-purple-200 pb-6 dark:border-purple-900'>
+          <div className='flex justify-center'>
+            <Button
+              size='icon'
+              type='button'
+              variant='outline'
+              className='relative overflow-hidden'
+              style={{ backgroundColor: strokeColor }}
+              aria-label='Choose stroke color'
+            >
+              <input
+                ref={colorRef}
+                type='color'
+                value={strokeColor}
+                onChange={event => setStrokeColor(event.target.value)}
+                className='absolute inset-0 h-full w-full cursor-pointer opacity-0'
+                aria-label='Stroke color'
+              />
+            </Button>
+          </div>
+        </div>
+
+        {/* Drawing mode */}
+        <div className='flex w-full flex-col items-center gap-3 border-b border-purple-200 pb-6 dark:border-purple-900'>
+          <Button size='icon' type='button' variant='outline' aria-label='Pen'>
+            <Pen size={16} />
+          </Button>
+
+          <Button
+            size='icon'
+            type='button'
+            variant='outline'
+            aria-label='Eraser'
+          >
+            <Eraser size={16} />
+          </Button>
+        </div>
+
+        {/* Actions */}
+        <div className='flex flex-col items-center gap-3'>
+          <Button size='icon' type='button' variant='outline' aria-label='Undo'>
+            <Undo size={16} />
+          </Button>
+
+          <Button size='icon' type='button' variant='outline' aria-label='Redo'>
+            <Redo size={16} />
+          </Button>
+
+          <Button
+            size='icon'
+            type='button'
+            variant='outline'
+            aria-label='Clear canvas'
+          >
+            <RotateCcw size={16} />
+          </Button>
+
+          <Button
+            size='icon'
+            type='button'
+            variant='outline'
+            aria-label='Save drawing'
+          >
+            <Save size={16} />
+          </Button>
+        </div>
+      </aside>
     </div>
   )
 }

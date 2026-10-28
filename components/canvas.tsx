@@ -36,6 +36,10 @@ export default function Canvas() {
     canvasRef.current?.redo()
   }
 
+  function handleClearClick() {
+    canvasRef.current?.clearCanvas()
+  }
+
   return (
     <div className='mt-6 flex w-full gap-4'>
       <div className='min-w-0 flex-1 overflow-hidden rounded-2xl'>
@@ -124,6 +128,7 @@ export default function Canvas() {
             size='icon'
             type='button'
             variant='outline'
+            onClick={handleClearClick}
             aria-label='Clear canvas'
           >
             <RotateCcw size={16} />

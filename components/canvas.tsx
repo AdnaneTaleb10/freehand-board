@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { ChangeEvent, useRef, useState } from 'react'
 import { ReactSketchCanvas } from 'react-sketch-canvas'
 import type { ReactSketchCanvasRef } from 'react-sketch-canvas'
 import { Button } from './ui/button'
@@ -10,6 +10,23 @@ export default function Canvas() {
   const canvasRef = useRef<ReactSketchCanvasRef>(null)
   const colorRef = useRef<HTMLInputElement>(null)
   const [strokeColor, setStrokeColor] = useState('#a855f7')
+  const [eraseMode, setEraseMode] = useState(false)
+
+  function handleStrokeColorChange(event: ChangeEvent<HTMLInputElement>) {
+    setStrokeColor(event.target.value)
+
+    console.log('Selected color:', colorRef.current?.value)
+  }
+
+  function handleEraseClick() {
+    setEraseMode(true)
+    canvasRef.current?.eraseMode(true)
+  }
+
+  function handlePenClick() {
+    setEraseMode(false)
+    canvasRef.current?.eraseMode(false)
+  }
 
   return (
     <div className='mt-6 flex w-full gap-4'>
@@ -40,7 +57,7 @@ export default function Canvas() {
                 ref={colorRef}
                 type='color'
                 value={strokeColor}
-                onChange={event => setStrokeColor(event.target.value)}
+                onChange={handleStrokeColorChange}
                 className='absolute inset-0 h-full w-full cursor-pointer opacity-0'
                 aria-label='Stroke color'
               />
@@ -50,7 +67,14 @@ export default function Canvas() {
 
         {/* Drawing mode */}
         <div className='flex w-full flex-col items-center gap-3 border-b border-purple-200 pb-6 dark:border-purple-900'>
-          <Button size='icon' type='button' variant='outline' aria-label='Pen'>
+          <Button
+            size='icon'
+            type='button'
+            variant='outline'
+            onClick={handlePenClick}
+            disabled={!eraseMode}
+            aria-label='Pen'
+          >
             <Pen size={16} />
           </Button>
 
@@ -58,6 +82,8 @@ export default function Canvas() {
             size='icon'
             type='button'
             variant='outline'
+            onClick={handleEraseClick}
+            disabled={eraseMode}
             aria-label='Eraser'
           >
             <Eraser size={16} />

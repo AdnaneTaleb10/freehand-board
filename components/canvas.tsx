@@ -28,6 +28,14 @@ export default function Canvas() {
     canvasRef.current?.eraseMode(false)
   }
 
+  function handleUndoClick() {
+    canvasRef.current?.undo()
+  }
+
+  function handleRedoClick() {
+    canvasRef.current?.redo()
+  }
+
   return (
     <div className='mt-6 flex w-full gap-4'>
       <div className='min-w-0 flex-1 overflow-hidden rounded-2xl'>
@@ -92,11 +100,23 @@ export default function Canvas() {
 
         {/* Actions */}
         <div className='flex flex-col items-center gap-3'>
-          <Button size='icon' type='button' variant='outline' aria-label='Undo'>
+          <Button
+            size='icon'
+            type='button'
+            variant='outline'
+            onClick={handleUndoClick}
+            aria-label='Undo'
+          >
             <Undo size={16} />
           </Button>
 
-          <Button size='icon' type='button' variant='outline' aria-label='Redo'>
+          <Button
+            size='icon'
+            type='button'
+            variant='outline'
+            onClick={handleRedoClick}
+            aria-label='Redo'
+          >
             <Redo size={16} />
           </Button>
 

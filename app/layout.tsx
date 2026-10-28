@@ -26,10 +26,12 @@ export default function RootLayout({
       className={cn('font-sans', geist.variable)}
       suppressHydrationWarning
     >
-      <body className={`${inter.className} flex h-screen w-full flex-col p-6`}>
+      <body
+        className={`${inter.className} flex h-dvh w-full flex-col overflow-hidden p-4`}
+      >
         <ThemeProvider attribute='class'>
           <Header />
-          <main>{children}</main>
+          <main className='min-h-0 flex-1'>{children}</main>
           <Toaster />
         </ThemeProvider>
       </body>

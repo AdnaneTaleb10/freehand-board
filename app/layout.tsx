@@ -25,10 +25,10 @@ export default function RootLayout({
       className={cn('font-sans', geist.variable)}
       suppressHydrationWarning
     >
-      <body className={`${inter.className} flex flex-col w-full p-6`}>
+      <body className={`${inter.className} flex flex-col w-full p-6 h-screen`}>
         <ThemeProvider attribute='class'>
           <Header />
-          <main className='grow'>{children}</main>
+          <main >{children}</main>
         </ThemeProvider>
       </body>
     </html>
